@@ -108,8 +108,8 @@ app.post("/getStudent",async(req,res)=>{
 app.post("/schedule",async(req,res)=>{
     const date=req.body.date
     const sub=req.body.sub
-    const sem=req.body.sem
-    const totalStudents=req.body.totalStudents
+    const sem=Number(req.body.sem)
+    const totalStudents=Number(req.body.totalStudents)
     const invigilator=req.body.invigilator
     var studentLeft=totalStudents
     console.log(req.body)
