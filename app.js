@@ -33,27 +33,25 @@ mongoose.connect('mongodb+srv://yadvendras20:2gVaU1s6nibPt9nz@cluster0.ii3dujj.m
 
 app.post("/uploadStudent",async(req,res)=>{
     const rollNo=req.body.rollNo
-    const schDate=req.body.schDate
-    const schSub=req.body.schSub
     const sem=req.body.sem
     var newStudent={};
 
     switch(sem){
-        case 1: newStudent=new sem1({rollNo, schDate, schSub})
+        case 1: newStudent=new sem1({rollNo, schDate:[], schSub:[]})
         break;
-        case 2: newStudent=new sem2({rollNo, schDate, schSub})
+        case 2: newStudent=new sem2({rollNo, schDate:[], schSub:[]})
         break;
-        case 3: newStudent=new sem3({rollNo, schDate, schSub})
+        case 3: newStudent=new sem3({rollNo, schDate:[], schSub:[]})
         break
-        case 4: newStudent=new sem4({rollNo, schDate, schSub})
+        case 4: newStudent=new sem4({rollNo, schDate:[], schSub:[]})
         break
-        case 5: newStudent=new sem5({rollNo, schDate, schSub})
+        case 5: newStudent=new sem5({rollNo, schDate:[], schSub:[]})
         break
-        case 6: newStudent=new sem6({rollNo, schDate, schSub})
+        case 6: newStudent=new sem6({rollNo, schDate:[], schSub:[]})
         break
-        case 7: newStudent=new sem7({rollNo, schDate, schSub})
+        case 7: newStudent=new sem7({rollNo, schDate:[], schSub:[]})
         break
-        case 8: newStudent=new sem8({rollNo, schDate, schSub})
+        case 8: newStudent=new sem8({rollNo, schDate:[], schSub:[]})
         break
     }
     try{
