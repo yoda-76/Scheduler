@@ -39,14 +39,9 @@ app.post("/uploadStudent",async(req,res)=>{
     var newStudent={};
 
     switch(sem){
-        case 1: 
-        newStudent=new sem1({rollNo, schDate, schSub})
-        console.log(1)
+        case 1: newStudent=new sem1({rollNo, schDate, schSub})
         break;
-        case 2: 
-        newStudent=new sem2({rollNo, schDate, schSub})
-        console.log(2)
-
+        case 2: newStudent=new sem2({rollNo, schDate, schSub})
         break;
         case 3: newStudent=new sem3({rollNo, schDate, schSub})
         break
@@ -60,7 +55,6 @@ app.post("/uploadStudent",async(req,res)=>{
         break
         case 8: newStudent=new sem8({rollNo, schDate, schSub})
         break
-        
     }
     try{
         await newStudent.save()
@@ -70,6 +64,32 @@ app.post("/uploadStudent",async(req,res)=>{
       }
     
     res.send('done')
+})
+
+app.post("/getStudent",async(req,res)=>{
+    const sem=req.body.sem
+
+    var data={}
+    switch(sem){
+        case 1: data=await sem1.find({})
+        break
+        case 2: data=await sem2.find({})
+        break
+        case 3: data=await sem3.find({})
+        break
+        case 4: data=await sem4.find({})
+        break
+        case 5: data=await sem5.find({})
+        break
+        case 6: data=await sem6.find({})
+        break
+        case 7: data=await sem7.find({})
+        break
+        case 8: data=await sem8.find({})
+        break
+    }
+    res.json(data)
+
 })
 
 
