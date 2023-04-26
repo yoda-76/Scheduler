@@ -62,9 +62,17 @@ app.post("/uploadStudent",async(req,res)=>{
         break
         
     }
-    await newStudent.save()
+    try{
+        await newStudent.save()
+    }catch (error) {
+        console.error("error is happeneig here",error);
+        return res.status(500).json({ msg: "Internal Server Error" });
+      }
+    
     res.send('done')
 })
+
+
 
 //write apis here
 
