@@ -76,7 +76,8 @@ app.post("/uploadStudent",async(req,res)=>{
 })
 
 app.post("/getStudent",async(req,res)=>{
-    const sem=req.body.sem
+    const sem=Number(req.body.sem)
+    console.log(sem)
 
     var data={}
     switch(sem){
