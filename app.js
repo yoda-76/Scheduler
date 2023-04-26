@@ -110,7 +110,7 @@ app.post("/schedule",async(req,res)=>{
     const totalStudents=req.body.totalStudents
     const invigilator=req.body.invigilator
     var studentLeft=totalStudents
-    console.log("first")
+    console.log(req.body)
 
     var data={}
     switch(sem){
