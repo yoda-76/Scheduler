@@ -131,12 +131,13 @@ app.post("/schedule",async(req,res)=>{
         case 8: data=await sem8.find({})
         break
     }
-
     var ba= Number(await b.find({sem:sem}))
-
+    
     ba++
+    console.log("data fetched\n", data)
     // console.log(data)
     for(var i=0;i<data.length;i++){
+        console.log("insidee loop")
         s=data[i]
         console.log(s)
         console.log(studentLeft)
