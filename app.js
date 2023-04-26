@@ -97,6 +97,7 @@ app.post("/getStudent",async(req,res)=>{
         case 8: data=await sem8.find({})
         break
     }
+    console.log(data)
     res.json(data)
 
 })
