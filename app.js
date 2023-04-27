@@ -133,10 +133,19 @@ app.post("/schedule",async(req,res)=>{
         case 8: data=await sem8.find({})
         break
     }
-    var ba= Number(await b.find({sem:sem}))
+    var ba= await b.find({sem:sem})
+    console.log("value of ba\n", ba)
+    if(!ba[0]){
+        console.log("ba is unndifined")
+        const bObj=new b({sem:sem,b:1}) 
+        await bObj.save()
+        ba=[{sem:6,b:0}]
+    }
     
+    ba=ba[0].b
+    console.log("current ba",ba)
     ba++
-    console.log("data fetched\n", data)
+    console.log("updated ba",ba)
     // console.log(data)
     for(var i=0;i<data.length;i++){
         console.log("insidee loop")
@@ -220,6 +229,14 @@ app.post("/reset",async(req,res)=>{
             { $set: { schDate:[], schSub:[], invigilator:[], batch:[]} }
           );
           if (result1.nModified === 0) {
+            return res.status(404).json({ msg: "Document not found" });
+          }
+          console.log(sem)
+          const result = await b.updateOne(
+            { sem:sem },
+            { $set: { b:0} }
+          );
+          if (result.nModified === 0) {
             return res.status(404).json({ msg: "Document not found" });
           }
     }
