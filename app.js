@@ -137,11 +137,11 @@ app.post("/schedule",async(req,res)=>{
     console.log("value of ba\n", ba)
     if(!ba[0]){
         console.log("ba is unndifined")
-        const bObj=new b({sem:sem,b:1}) 
+        const bObj=new b({sem:sem,b:1})
         await bObj.save()
-        ba=[{sem:6,b:0}]
-    }
-    
+        ba=[{sem,b:0}]
+    } 
+
     ba=ba[0].b
     console.log("current ba",ba)
     ba++
@@ -192,14 +192,6 @@ app.post("/schedule",async(req,res)=>{
                 break
             }
 
-
-
-
-
-
-
-
-
             studentLeft=studentLeft-1
         }
     }
@@ -221,7 +213,7 @@ app.post("/schedule",async(req,res)=>{
 })
 
 app.post("/reset",async(req,res)=>{
-    const sem =req.body.sem
+    const sem =Number(req.body.sem)
     // const data=await sem8.find({})
     const t=async(sems)=>{
         const result1 = await sems.updateMany(
