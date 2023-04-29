@@ -12,6 +12,7 @@ const studentSchema=mongoose.Schema({
     sub:Object,
     schDate: Object,
     schSub:Object,
+    time:Object,
     invigilator:Object,
     batch:Object
 })
@@ -48,21 +49,21 @@ app.post("/uploadStudent",async(req,res)=>{
     var newStudent={};
 
     switch(sem){
-        case 1: newStudent=new sem1({rollNo:rollNo, sub:sub, schDate:[], schSub:[], invigilator:[], batch:[]})
+        case 1: newStudent=new sem1({rollNo, sub, schDate:[], schSub:[], time:[], invigilator:[], batch:[]})
         break;
-        case 2: newStudent=new sem2({rollNo, sub, schDate:[], schSub:[], invigilator:[], batch:[]})
+        case 2: newStudent=new sem2({rollNo, sub, schDate:[], schSub:[], time:[], invigilator:[], batch:[]})
         break;
-        case 3: newStudent=new sem3({rollNo, sub, schDate:[], schSub:[], invigilator:[], batch:[]})
+        case 3: newStudent=new sem3({rollNo, sub, schDate:[], schSub:[], time:[], invigilator:[], batch:[]})
         break
-        case 4: newStudent=new sem4({rollNo, sub, schDate:[], schSub:[], invigilator:[], batch:[]})
+        case 4: newStudent=new sem4({rollNo, sub, schDate:[], schSub:[], time:[], invigilator:[], batch:[]})
         break
-        case 5: newStudent=new sem5({rollNo, sub, schDate:[], schSub:[], invigilator:[], batch:[]})
+        case 5: newStudent=new sem5({rollNo, sub, schDate:[], schSub:[], time:[], invigilator:[], batch:[]})
         break
-        case 6: newStudent=new sem6({rollNo, sub, schDate:[], schSub:[], invigilator:[], batch:[]})
+        case 6: newStudent=new sem6({rollNo, sub, schDate:[], schSub:[], time:[], invigilator:[], batch:[]})
         break
-        case 7: newStudent=new sem7({rollNo, sub, schDate:[], schSub:[], invigilator:[], batch:[]})
+        case 7: newStudent=new sem7({rollNo, sub, schDate:[], schSub:[], time:[], invigilator:[], batch:[]})
         break
-        case 8: newStudent=new sem8({rollNo:rollNo, sub:sub, schDate:[], schSub:[], invigilator:[], batch:[]})
+        case 8: newStudent=new sem8({rollNo, sub, schDate:[], schSub:[], time:[], invigilator:[], batch:[]})
         break
     }
     try{
@@ -103,6 +104,38 @@ app.post("/getStudent",async(req,res)=>{
 
 })
 
+
+
+app.post("/getSchedule",async(req,res)=>{
+    const rollNo=req.body.rollNo
+    var scheduledObj={}
+    const makeSchedule=async(sem)=>{
+        var data=await sem.find({rollNo})
+        console.log(data)
+        res.json(data)
+    }
+    switch(req.body.sem){
+        case 1: makeSchedule(sem1)
+        break
+        case 2: makeSchedule(sem2)
+        break
+        case 3: makeSchedule(sem3)
+        break
+        case 4: makeSchedule(sem4)
+        break
+        case 5: makeSchedule(sem5)
+        break
+        case 6: makeSchedule(sem6)
+        break
+        case 7: makeSchedule(sem7)
+        break
+        case 8: makeSchedule(sem8)
+        break
+    }
+
+
+})
+
  
 //schedule form
 app.post("/schedule",async(req,res)=>{
@@ -111,6 +144,7 @@ app.post("/schedule",async(req,res)=>{
     const sem=Number(req.body.sem)
     const totalStudents=Number(req.body.totalStudents)
     const invigilator=req.body.invigilator
+    var time="a"
     var studentLeft=totalStudents
     console.log(req.body)
 
@@ -152,7 +186,44 @@ app.post("/schedule",async(req,res)=>{
     ba++
     console.log("updated ba",ba)
     // console.log(data)
+    const count=0
     for(var i=0;i<data.length;i++){
+        if(count>30 && count<=60){
+            time="b"
+            ba++
+            const result = await b.updateOne(
+                { sem:sem },
+                { $set: { b:ba} }
+              );
+              if (result.nModified === 0) {
+                return res.status(404).json({ msg: "Document not found" });
+              }
+        }
+        else if(count>60 && count<=90){
+            time="c"
+            ba++
+            const result = await b.updateOne(
+                { sem:sem },
+                { $set: { b:ba} }
+              );
+              if (result.nModified === 0) {
+                return res.status(404).json({ msg: "Document not found" });
+              }
+        }
+        else if(count>90){
+            time="d"
+            ba++
+            const result = await b.updateOne(
+                { sem:sem },
+                { $set: { b:ba} }
+              );
+              if (result.nModified === 0) {
+                return res.status(404).json({ msg: "Document not found" });
+              }
+        }
+        else if(count>120){
+            break
+        }
         console.log("insidee loop")
         s=data[i]
         console.log(s)
@@ -165,6 +236,8 @@ app.post("/schedule",async(req,res)=>{
             s.schSub.push(sub)
             s.invigilator.push(invigilator)
             s.batch.push(ba)
+            s.time.push(time)
+            count++
 
             
 
