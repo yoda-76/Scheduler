@@ -133,6 +133,11 @@ app.post("/schedule",async(req,res)=>{
         case 8: data=await sem8.find({})
         break
     }
+
+    //sorting fetched student data
+    await data.sort((b,a) => {return b.rollNo - a.rollNo});
+    console.log("data:",data)
+
     var ba= await b.find({sem:sem})
     console.log("value of ba\n", ba)
     if(!ba[0]){
