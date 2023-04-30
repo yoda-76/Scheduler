@@ -297,7 +297,7 @@ app.post("/reset",async(req,res)=>{
     const t=async(sems)=>{
         const result1 = await sems.updateMany(
             {  },
-            { $set: { schDate:[], schSub:[], invigilator:[], batch:[]} }
+            { $set: { schDate:[], schSub:[],time:[], invigilator:[], batch:[]} }
           );
           if (result1.nModified === 0) {
             return res.status(404).json({ msg: "Document not found" });
