@@ -186,7 +186,7 @@ app.post("/schedule",async(req,res)=>{
     ba++
     console.log("updated ba",ba)
     // console.log(data)
-    const count=0
+    var count=0
     for(var i=0;i<data.length;i++){
         if(count>30 && count<=60){
             time="b"
