@@ -16,6 +16,12 @@ const studentSchema=mongoose.Schema({
     invigilator:Object,
     batch:Object
 })
+
+
+const invigilatorSchema=mongoose.Schema({
+    id: String,
+    date: Object
+})
 //rollNo:rollNo, sub:sub, schDate:[], schSub:[], invigilator:[], batch:[]
 
 const batchSchema=mongoose.Schema({
@@ -33,6 +39,7 @@ const sem7=mongoose.model("sem7",studentSchema)
 const sem8=mongoose.model("sem8",studentSchema)
 
 const b=mongoose.model("b",batchSchema)
+const invObjectModel=mongoose.model("invObjectModel",invigilatorSchema)
 
 
 mongoose.connect('mongodb+srv://yadvendras20:2gVaU1s6nibPt9nz@cluster0.ii3dujj.mongodb.net/test').then(e=>{
@@ -144,6 +151,25 @@ app.post("/schedule",async(req,res)=>{
     const sem=Number(req.body.sem)
     const totalStudents=Number(req.body.totalStudents)
     const invigilator=req.body.invigilator
+    const invData=await invObjectModel.find({id:invigilator})
+    if(invData[0]){
+        //update the invigilator data
+        if(!invData[0].date.includes(date)){
+            const result = await invObjectModel.updateOne(
+                { id:invigilator },
+                { $set: { date:[...invData[0].date, date]} }
+              );
+              if (result.nModified === 0) {
+                return res.status(404).json({ msg: "Document not found" });
+              }
+        }else{
+            return res.status(500).json({ msg: "invigilator is already scheduled for this date" });
+
+        }
+    }else{
+        const newInvObj=new invObjectModel({id:invigilator,date:[date]})
+        newInvObj.save()
+    }
     var totalStudentsLeft=0
     var time="a"
     var studentLeft=totalStudents
@@ -308,6 +334,13 @@ app.post("/reset",async(req,res)=>{
             { $set: { b:0} }
           );
           if (result.nModified === 0) {
+            return res.status(404).json({ msg: "Document not found" });
+          }
+          const result2 = await invObjectModel.updateMany(
+            { },
+            { $set: { date:[]} }
+          );
+          if (result2.nModified === 0) {
             return res.status(404).json({ msg: "Document not found" });
           }
     }
