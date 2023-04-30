@@ -144,6 +144,7 @@ app.post("/schedule",async(req,res)=>{
     const sem=Number(req.body.sem)
     const totalStudents=Number(req.body.totalStudents)
     const invigilator=req.body.invigilator
+    var totalStudentsLeft=0
     var time="a"
     var studentLeft=totalStudents
     console.log(req.body)
@@ -187,8 +188,9 @@ app.post("/schedule",async(req,res)=>{
     console.log("updated ba",ba)
     // console.log(data)
     var count=0
-    for(var i=0;i<data.length;i++){
-        if(count>30 && count<=60){
+    var i=0
+    for(i=0;i<data.length;i++){
+        if(count==30){
             time="b"
             ba++
             const result = await b.updateOne(
@@ -199,7 +201,7 @@ app.post("/schedule",async(req,res)=>{
                 return res.status(404).json({ msg: "Document not found" });
               }
         }
-        else if(count>60 && count<=90){
+        else if(count==60){
             time="c"
             ba++
             const result = await b.updateOne(
@@ -210,7 +212,7 @@ app.post("/schedule",async(req,res)=>{
                 return res.status(404).json({ msg: "Document not found" });
               }
         }
-        else if(count>90){
+        else if(count==90){
             time="d"
             ba++
             const result = await b.updateOne(
@@ -221,16 +223,15 @@ app.post("/schedule",async(req,res)=>{
                 return res.status(404).json({ msg: "Document not found" });
               }
         }
-        else if(count>120){
+        else if(count>120 || studentLeft<=0){
+            totalStudentsLeft= data.length-i
             break
         }
         console.log("insidee loop")
         s=data[i]
         console.log(s)
         console.log(studentLeft)
-        if(studentLeft<=0){
-            break
-        }
+        
         if(studentLeft>0 && s.sub.includes(sub) && !s.schDate.includes(date) && !s.schSub.includes(sub)){
             s.schDate.push(date)
             s.schSub.push(sub)
@@ -245,7 +246,7 @@ app.post("/schedule",async(req,res)=>{
               const t=async(sems)=>{
                 const result1 = await sems.updateOne(
                     { rollNo:s.rollNo },
-                    { $set: { schDate:s.schDate, schSub:s.schSub, invigilator:s.invigilator, batch:s.batch} }
+                    { $set: { schDate:s.schDate, schSub:s.schSub,time:s.time, invigilator:s.invigilator, batch:s.batch} }
                   );
                   if (result1.nModified === 0) {
                     return res.status(404).json({ msg: "Document not found" });
@@ -286,7 +287,7 @@ app.post("/schedule",async(req,res)=>{
         return res.status(404).json({ msg: "Document not found" });
       }
 
-    res.json({msg:"done", studentLeft})
+    res.json({msg:"done", totalStudentsLeft})
 
 })
 
