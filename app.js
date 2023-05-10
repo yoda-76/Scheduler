@@ -350,7 +350,7 @@ app.post("/schedule",async(req,res)=>{
 app.post("/get",async(req,res)=>{
     const data=await scheduledData.find({sem:6})
     console.log(data[0])
-    res.send("done")
+    res.send(data[0].data)
 })
 
 app.post("/set",(req,res)=>{
