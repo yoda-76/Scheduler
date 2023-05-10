@@ -7,6 +7,11 @@ app.use(bodyParser.json())
 app.use(cors())
 
 // create schema
+const scheduledDataSchema=mongoose.Schema({
+  sem:Number,
+  data:Object
+})
+
 const studentSchema=mongoose.Schema({
     rollNo: Number,
     sub:Object,
@@ -40,6 +45,8 @@ const sem8=mongoose.model("sem8",studentSchema)
 
 const b=mongoose.model("b",batchSchema)
 const invObjectModel=mongoose.model("invObjectModel",invigilatorSchema)
+
+const scheduledData=mongoose.model("scheduledData",scheduledDataSchema)
 
 
 mongoose.connect('mongodb+srv://yadvendras20:2gVaU1s6nibPt9nz@cluster0.ii3dujj.mongodb.net/test').then(e=>{
@@ -152,6 +159,7 @@ app.post("/schedule",async(req,res)=>{
     const totalStudents=Number(req.body.totalStudents)
     const invigilator=req.body.invigilator
     const invData=await invObjectModel.find({id:invigilator})
+    const scheduledObject={}
     if(invData[0]){
         //update the invigilator data
         if(!invData[0].date.includes(date)){
@@ -173,7 +181,7 @@ app.post("/schedule",async(req,res)=>{
     var totalStudentsLeft=0
     var time="a"
     var studentLeft=totalStudents
-    console.log(req.body)
+    // console.log(req.body)
 
     var data={}
     switch(sem){
@@ -197,21 +205,21 @@ app.post("/schedule",async(req,res)=>{
 
     //sorting fetched student data
     await data.sort((b,a) => {return b.rollNo - a.rollNo});
-    console.log("data:",data)
+    // console.log("data:",data)
 
     var ba= await b.find({sem:sem})
     console.log("value of ba\n", ba)
     if(!ba[0]){
-        console.log("ba is unndifined")
+        // console.log("ba is unndifined")
         const bObj=new b({sem:sem,b:1})
         await bObj.save()
         ba=[{sem,b:0}]
     } 
 
     ba=ba[0].b
-    console.log("current ba",ba)
+    // console.log("current ba",ba)
     ba++
-    console.log("updated ba",ba)
+    // console.log("updated ba",ba)
     // console.log(data)
     var count=0
     var i=0
@@ -253,11 +261,12 @@ app.post("/schedule",async(req,res)=>{
             totalStudentsLeft= data.length-i
             break
         }
-        console.log("insidee loop")
+        // console.log("insidee loop")
         s=data[i]
-        console.log(s)
-        console.log(studentLeft)
+        // console.log(s)
+        // console.log(studentLeft)
         
+        // console.log(inside)
         if(studentLeft>0 && s.sub.includes(sub) && !s.schDate.includes(date) && !s.schSub.includes(sub)){
             s.schDate.push(date)
             s.schSub.push(sub)
@@ -266,7 +275,25 @@ app.post("/schedule",async(req,res)=>{
             s.time.push(time)
             count++
 
+            const scheduledObject=await scheduledData.find({sem:sem})
             
+            if(!scheduledObject[0]){scheduledObject[0]={}}
+            if(!scheduledObject[0][data]){scheduledObject[0][data]={}}
+            if(!scheduledObject[0][data][sub]){scheduledObject[0][data][sub]={}}
+            if(!scheduledObject[0][data][sub][date]){scheduledObject[0][data][sub][date]={}}
+            if(!scheduledObject[0][data][sub][date][invigilator]){scheduledObject[0][data][sub][date][invigilator]={}}
+            if(!scheduledObject[0][data][sub][date][invigilator][time]){scheduledObject[0][data][sub][date][invigilator][time]=[]}
+            
+            // console.log(scheduledObject[sub][date][invigilator])
+            scheduledObject[0][data][sub][date][invigilator][time].push(s.rollNo)
+            console.log("test",scheduledObject[0][data])
+            
+            console.log("updated data",scheduledObject)
+
+            scheduledData.updateOne(
+              {sem:6},
+              {$set:{data:scheduledObject[0][data]}}
+            )
 
 
               const t=async(sems)=>{
@@ -313,10 +340,15 @@ app.post("/schedule",async(req,res)=>{
         return res.status(404).json({ msg: "Document not found" });
       }
 
-    res.json({msg:"done", totalStudentsLeft})
+    res.json({msg:"done", totalStudentsLeft, scheduledObject})
 
 })
 
+app.post("/set",(req,res)=>{
+  const obj={sem:6, data:{temp:1}}
+  const newObj=new scheduledData(obj)
+  newObj.save()
+})
 app.post("/reset",async(req,res)=>{
     const sem =Number(req.body.sem)
     // const data=await sem8.find({})
