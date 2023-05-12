@@ -4,7 +4,8 @@ const app=express()
 const mongoose=require('mongoose')
 const bodyParser=require('body-parser')
 app.use(bodyParser.json())
-app.use(cors({origin:"0.0.0.0:3000"}))
+app.use(cors({origin:"http://localhost:3000", credentials:true, 
+optionSuccessStatus:200}))
 
 // create schema
 const scheduledDataSchema=mongoose.Schema({
