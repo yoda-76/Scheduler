@@ -386,7 +386,7 @@ app.post("/reset",async(req,res)=>{
             return res.status(404).json({ msg: "Document not found" });
           }
           const result3 = await scheduledData.updateOne(
-            { sem:6},
+            { sem:sem},
             { $set: { data:{}} }
           );
           if (result3.nModified === 0) {
