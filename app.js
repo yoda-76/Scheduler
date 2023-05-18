@@ -349,7 +349,7 @@ app.post("/schedule",async(req,res)=>{
 })
 
 app.post("/get",async(req,res)=>{
-    const data=await scheduledData.find({sem:6})
+    const data=await scheduledData.find({sem:req.body.sem})
     console.log(data[0])
     res.send(data[0].data)
 })
