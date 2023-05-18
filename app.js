@@ -292,7 +292,7 @@ app.post("/schedule",async(req,res)=>{
             console.log("updated data",scheduledObject)
 
             const result2= await scheduledData.updateOne(
-              {sem:6},
+              {sem:sem},
               {$set:{data:scheduledObject[0].data}}
             )
             if (result2.nModified === 0) {
@@ -355,7 +355,7 @@ app.post("/get",async(req,res)=>{
 })
 
 app.post("/set",(req,res)=>{
-  const obj={sem:6, data:{temp:1}}
+  const obj={sem:req.body.sem, data:{temp:1}}
   const newObj=new scheduledData(obj)
   newObj.save()
 })
