@@ -180,7 +180,7 @@ app.post("/schedule",async(req,res)=>{
         newInvObj.save()
     }
     var totalStudentsLeft=0
-    var time="a"
+    var time="9:00 - 10:30"
     var studentLeft=totalStudents
     // console.log(req.body)
 
@@ -226,7 +226,7 @@ app.post("/schedule",async(req,res)=>{
     var i=0
     for(i=0;i<data.length;i++){
         if(count==30){
-            time="b"
+            time="10:30-12:00"
             ba++
             const result = await b.updateOne(
                 { sem:sem },
@@ -237,7 +237,7 @@ app.post("/schedule",async(req,res)=>{
               }
         }
         else if(count==60){
-            time="c"
+            time="1:00-2:30"
             ba++
             const result = await b.updateOne(
                 { sem:sem },
@@ -248,7 +248,7 @@ app.post("/schedule",async(req,res)=>{
               }
         }
         else if(count==90){
-            time="d"
+            time="2:30-4:00"
             ba++
             const result = await b.updateOne(
                 { sem:sem },
@@ -420,3 +420,11 @@ app.get('/cors', (req, res) => {
 //write apis here
 
 app.listen(30)
+
+
+// __pipeline__
+//
+// 1. display no of students left for that perticular subject                     (done)
+// 2. reset for a perticular sem                                                  (done)
+// 3. add field for internal invigilator
+// 4. add warnings (empty firlds, illegal/garbage values, already scheduled)      (done)
