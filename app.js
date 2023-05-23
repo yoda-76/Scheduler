@@ -430,9 +430,9 @@ app.listen(30)
 // 4. add warnings (empty firlds, illegal/garbage values, already scheduled)      (done)
 
 
-{
-  subjectCode: {
-    date1:{time1:[1,2,3,4,5,6],time2:[7,8,9,10,11,12]},
-    dote2:{}
-  }
-}
+// {
+//   subjectCode: {
+//     date1:{time1:[1,2,3,4,5,6],time2:[7,8,9,10,11,12]},
+//     dote2:{}
+//   }
+// }
