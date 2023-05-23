@@ -4,7 +4,7 @@ const app=express()
 const mongoose=require('mongoose')
 const bodyParser=require('body-parser')
 app.use(bodyParser.json())
-app.use(cors({origin:"https://imsschedular.vercel.app/", credentials:true, 
+app.use(cors({origin:"https://practical-schedular.vercel.app", credentials:true, 
 optionSuccessStatus:200}))
 
 // create schema
