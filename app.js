@@ -414,7 +414,7 @@ app.post("/reset",async(req,res)=>{
       res.send("done")
 })
 app.get('/cors', (req, res) => {
-  res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.set('Access-Control-Allow-Origin', 'https://practical-schedular.vercel.app/');
   res.send({ "msg": "This has CORS enabled 🎈" })
   })
 //write apis here
