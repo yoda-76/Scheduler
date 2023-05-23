@@ -155,6 +155,7 @@ app.post("/getSchedule",async(req,res)=>{
 //schedule form
 app.post("/schedule",async(req,res)=>{
     const date=req.body.date
+    const internalInv=req.body.invigilator
     const sub=req.body.sub
     const sem=Number(req.body.sem)
     const totalStudents=Number(req.body.totalStudents)
@@ -268,7 +269,7 @@ app.post("/schedule",async(req,res)=>{
         // console.log(studentLeft)
         
         // console.log(inside)
-        if(studentLeft>0 && s.sub.includes(sub) && !s.schDate.includes(date) && !s.schSub.includes(sub)){
+        if(studentLeft>0 && s.sub.includes(sub) && s.schDate.filter(d=>d==date).length<=1 && !s.schSub.includes(sub)){
             s.schDate.push(date)
             s.schSub.push(sub)
             s.invigilator.push(invigilator)
