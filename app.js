@@ -4,7 +4,7 @@ const app=express()
 const mongoose=require('mongoose')
 const bodyParser=require('body-parser')
 app.use(bodyParser.json())
-app.use(cors({origin:"http://localhost:3000", credentials:true, 
+app.use(cors({origin:"https://imsschedular.vercel.app/", credentials:true, 
 optionSuccessStatus:200}))
 
 // create schema
@@ -428,3 +428,11 @@ app.listen(30)
 // 2. reset for a perticular sem                                                  (done)
 // 3. add field for internal invigilator
 // 4. add warnings (empty firlds, illegal/garbage values, already scheduled)      (done)
+
+
+{
+  subjectCode: {
+    date1:{time1:[1,2,3,4,5,6],time2:[7,8,9,10,11,12]},
+    dote2:{}
+  }
+}
